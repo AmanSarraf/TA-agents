@@ -19,6 +19,7 @@ from talent_angels.assistant.intent import CAPABILITY_CONNECT
 from talent_angels.evals import LocateMetrics
 from talent_angels.llm.factory import get_answer_mode, get_llm_client
 from talent_angels.suites import SuiteRegistry, default_suite_registry
+from talent_angels.telemetry import setup_telemetry
 
 GOLDEN_LOCATE_PATH = Path(__file__).resolve().parents[2] / "tests" / "evals" / "golden_locate.json"
 
@@ -51,6 +52,7 @@ def _build_parser() -> argparse.ArgumentParser:
 
 def main(argv: Sequence[str] | None = None, *, registry: SuiteRegistry | None = None) -> int:
     args = _build_parser().parse_args(argv)
+    setup_telemetry()
     selected_registry = registry or default_suite_registry()
 
     if args.command == "bench":

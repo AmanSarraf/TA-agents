@@ -15,12 +15,14 @@ from talent_angels.assistant import run_turn
 from talent_angels.assistant.intent import CAPABILITY_CONNECT, Capability
 from talent_angels.llm.factory import get_answer_mode, get_llm_client
 from talent_angels.suites import SuiteRegistry, default_suite_registry
+from talent_angels.telemetry import setup_telemetry
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     with app.state.registry.open() as runtime:
         app.state.runtime = runtime
+        setup_telemetry()
         app.state.llm_client = get_llm_client()
         app.state.answer_mode = get_answer_mode()
         yield
